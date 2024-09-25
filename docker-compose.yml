@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - 80:80
+      - 443:443
+    environment:
+      - VIRTUAL_HOST=unalcriptografia.com
+    depends_on:
+      - webapp
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - nginx_data:/etc/ssl
+    networks:
+      - webnet
+
+  webapp:
+    build: ./webapp
+    ports:
+      - 5050:5000
+    networks:
+      - webnet
+
+volumes:
+  nginx_data:
+
+networks:
+  webnet:
